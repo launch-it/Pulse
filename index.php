@@ -52,7 +52,7 @@
 
         <main>
             <p>Please click the button below to login.</p>
-            <button onclick="window.location.href='app/signon.php';">Login</button>
+            <button onclick="window.location.href='app/usr/login.php';">Login</button>
         </main>
     </div>
 </body>
