@@ -1,66 +1,43 @@
 <?php
-require_once 'db.php'; // Include your database connection file
+require_once '../db.php'; // Adjust the path as needed
 
-// Check if the form is submitted
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Retrieve user input
-    $fullName = $_POST['fullname'];
     $email = $_POST['email'];
-    $password = $_POST['password'];
-    $confirmPassword = $_POST['confirm_password'];
-    $company = !empty($_POST['company']) ? $_POST['company'] : NULL;
 
-    // Validate inputs: This is just a basic validation. Expand as needed.
-    if ($password !== $confirmPassword) {
-        die('Passwords do not match.');
-    }
+    // Generate a unique token
+    $token = bin2hex(random_bytes(50)); // Ensure this token is sufficiently random and secure
 
-    // Hash the password
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    // Set token expiration time, e.g., 1 hour from now
+    $expires = new DateTime("now");
+    $expires->add(new DateInterval('PT01H')); // 1 hour
+    $expiresFormatted = $expires->format('Y-m-d H:i:s');
 
-    // Generate a verification token
-    $verificationToken = bin2hex(random_bytes(50)); // Ensure this is secure
-
-    // SQL to insert the new user
-    $sql = "INSERT INTO users (FullName, Email, Company, Password, VerificationToken) VALUES (?, ?, ?, ?, ?)";
-
-    // Prepare and bind parameters to prevent SQL injection
+    // Insert or update the token in the database
+    $sql = "INSERT INTO password_resets (email, token, expires_at) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE token=?, expires_at=?";
     if ($stmt = $conn->prepare($sql)) {
-        $stmt->bind_param("sssss", $fullName, $email, $company, $hashedPassword, $verificationToken);
+        $stmt->bind_param("sssss", $email, $token, $expiresFormatted, $token, $expiresFormatted);
 
-        // Execute the query
         if ($stmt->execute()) {
-      
-            echo "Registration successful. Please check your email to verify your account.";
-            if ($stmt->execute()) {
-                // Compose verification email
-                $verificationLink = "http://ziplink.us/app/usr/verify.php?token=" . $verificationToken;
-                $subject = "Verify Your Email for ZipLink";
-                $message = "Please click on the following link to verify your email: " . $verificationLink;
-                $headers = "From: jared@ziplink.us";
-            
-                // Send verification email
-                if(mail($email, $subject, $message, $headers)) {
-                    // Redirect or inform the user
-                    header("Location: registration_confirmation.php");
-                    exit();
-                } else {
-                    echo "Error in sending verification email";
-                }
+            // Send email
+            $resetLink = "https://ziplink.us/app/usr/reset_password.php?token=" . $token;
+            $subject = "Password Reset for ZipLink";
+            $message = "Please click on the following link to reset your password: " . $resetLink;
+            $headers = "From: noreply@ziplink.us";
+
+            if (mail($email, $subject, $message, $headers)) {
+                echo "Password reset link has been sent to your email.";
             } else {
-                // Handle error
-                echo "Error: " . $stmt->error;
+                echo "Failed to send password reset email.";
             }
-            
         } else {
-            // Handle error
             echo "Error: " . $stmt->error;
         }
 
         $stmt->close();
     } else {
-        // Handle error
         echo "Error: " . $conn->error;
     }
+} else {
+    echo "Invalid request method.";
 }
 ?>
