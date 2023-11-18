@@ -11,17 +11,12 @@
         <header>
             <h1>Reset Your Password</h1>
         </header>
-
         <main class="main-content">
-            <form action="process_reset_password.php" method="post">
-                <input type="hidden" name="token" value="<?php echo htmlspecialchars($_GET['token']); ?>">
-
-                <label for="password">New Password:</label>
-                <input type="password" id="password" name="password" required>
-
-                <label for="confirm_password">Confirm New Password:</label>
-                <input type="password" id="confirm_password" name="confirm_password" required>
-
+            <form action="process_reset_pass.php" method="post" class="reset-form">
+                <div class="form-group">
+                    <label for="email">Enter your email address:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
                 <button type="submit" class="btn">Reset Password</button>
             </form>
         </main>

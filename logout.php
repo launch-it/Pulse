@@ -8,5 +8,5 @@ $_SESSION = array();
 session_destroy();
 
 // Redirect to login page or home page after logging out
-header("Location: login.php"); // Adjust the path as necessary
+header("Location: /app/login.php"); // Adjust the path as necessary
 exit();

@@ -1,5 +1,5 @@
 <?php
-// Include the configuration file
+
 require_once 'config.php';
 
 // Create a new database connection
@@ -10,5 +10,4 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Use this $conn object for your SQL operations
 ?>

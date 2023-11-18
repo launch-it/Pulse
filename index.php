@@ -4,55 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to ZipLink</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4; /* Light grey background */
-            color: #333; /* Dark text for readability */
-            text-align: center;
-        }
-
-        .container {
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: white;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-        }
-
-        header h1 {
-            color: #005b96; /* Modern blue */
-            margin-bottom: 20px;
-        }
-
-        button {
-            background-color: #007bff; /* Bright blue */
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
-
-        button:hover {
-            background-color: #0056b3; /* Darker blue on hover */
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" integrity="sha512-q3eWabyZPc1XTCmF+8/LuE1ozpg5xxn7iO89yfSOd5/oKvyqLngoNGsx8jq92Y8eXJ/IRxQbEC+FGSYxtk2oiw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="icon" href="assets/img/favicons/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" href="assets/img/favicons/favicon-192x192.png" sizes="192x192">
+    <link rel="apple-touch-icon" href="assets/img/favicons/favicon-180x180.png">
+    <meta name="msapplication-TileImage" content="assets/img/favicons/favicon-270x270.png">
+    <meta name="msapplication-TileColor" content="#007bff">
+    <meta name="theme-color" content="#007bff">
 </head>
 <body>
-    <div class="container">
+    <div class="login-container">
         <header>
+            <img src="assets/img/logo.svg" alt="ZipLink">
             <h1>Welcome to ZipLink</h1>
         </header>
-
-        <main>
-            <p>Please click the button below to login.</p>
-            <button onclick="window.location.href='app/usr/login.php';">Login</button>
+        <main class="main-content">
+            <p class="login-helper">Please click the button below to login.</p>
+            <button onclick="window.location.href='app/login.php';">Login<i class="fas fa-sign-in-alt"></i></button>
         </main>
     </div>
 </body>

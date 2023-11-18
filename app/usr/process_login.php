@@ -1,5 +1,7 @@
 <?php
-require_once '../db.php'; // Adjust path as needed
+require_once '../db.php'; 
+
+session_start(); // Start a new session or resume the existing one
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST['email'];
@@ -19,8 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 // Verify the password
                 if (password_verify($password, $hashedPassword)) {
-                    // Password is correct, start a new session
-                    session_start();
+                    // Password is correct
                     
                     // Store data in session variables
                     $_SESSION["loggedin"] = true;
@@ -31,11 +32,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     exit();
                 } else {
                     // Password is not valid
-                    echo "The password you entered was not valid.";
+                    displayErrorMessage("The password you entered was not valid.");
                 }
             } else {
                 // Email doesn't exist
-                echo "No account found with that email.";
+                displayErrorMessage("No account found with that email.");
             }
         } else {
             echo "Oops! Something went wrong. Please try again later.";
@@ -45,5 +46,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         echo "Oops! Something went wrong. Please try again later.";
     }
+} else {
+    echo "Invalid request method.";
+}
+
+function displayErrorMessage($message) {
+    echo "<!DOCTYPE html>
+    <html lang='en'>
+    <head>
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <title>Login Error - ZipLink</title>
+        <link rel='stylesheet' href='../../assets/style.css'>
+    </head>
+    <body>
+        <div class='container'>
+            <header>
+                <h1>Login Error</h1>
+            </header>
+
+            <main class='main-content'>
+                <p>$message</p>
+                <a href='../login.php' class='btn'>Return to Login</a>
+            </main>
+        </div>
+    </body>
+    </html>";
 }
 ?>

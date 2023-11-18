@@ -1,0 +1,5 @@
+[13-Nov-2023 04:32:41 UTC] PHP Fatal error:  require_once(): Failed opening required '../../db.php' (include_path='.:/usr/local/php74/pear') in /home/customer/www/ziplink.us/public_html/app/projects/add_project.php on line 8
+[13-Nov-2023 04:33:29 UTC] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/customer/www/ziplink.us/public_html/app/projects/add_project.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/customer/www/ziplink.us/public_html/app/projects/add_project.php on line 34

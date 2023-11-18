@@ -1,0 +1,2 @@
+[13-Nov-2023 03:15:17 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/customer/www/ziplink.us/public_html/app/portal.php on line 37
+[13-Nov-2023 03:41:39 UTC] PHP Fatal error:  require_once(): Failed opening required '../db.php' (include_path='.:/usr/local/php74/pear') in /home/customer/www/ziplink.us/public_html/app/login.php on line 3

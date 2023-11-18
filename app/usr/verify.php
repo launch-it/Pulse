@@ -1,5 +1,32 @@
 <?php
-require_once 'db.php'; // Include your database connection file
+require_once '../db.php'; 
+
+function displayMessage($message, $success = true) {
+    $buttonText = $success ? 'Go to Login' : 'Try Again';
+    $buttonLink = $success ? '../login.php' : 'signup.php';
+
+    echo "<!DOCTYPE html>
+    <html lang='en'>
+    <head>
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <title>Account Verification - ZipLink</title>
+        <link rel='stylesheet' href='../../assets/style.css'>
+    </head>
+    <body>
+        <div class='container'>
+            <header>
+                <h1>Account Verification</h1>
+            </header>
+
+            <main class='main-content'>
+                <p>$message</p>
+                <a href='$buttonLink' class='btn'>$buttonText</a>
+            </main>
+        </div>
+    </body>
+    </html>";
+}
 
 // Check if the token is in the query string
 if (isset($_GET['token'])) {
@@ -8,42 +35,37 @@ if (isset($_GET['token'])) {
     // SQL to check if the token exists and if the account is not already active
     $sql = "SELECT UserID FROM users WHERE VerificationToken = ? AND IsActive = FALSE";
 
-    // Prepare and bind parameters to prevent SQL injection
     if ($stmt = $conn->prepare($sql)) {
         $stmt->bind_param("s", $token);
 
-        // Execute the query
         if ($stmt->execute()) {
-            // Store the result so we can check if the account exists
             $stmt->store_result();
 
             if ($stmt->num_rows > 0) {
-                // Token is valid and account is not activated yet
-                // SQL to activate the account
                 $updateSql = "UPDATE users SET IsActive = TRUE, VerificationToken = NULL WHERE VerificationToken = ?";
                 if ($updateStmt = $conn->prepare($updateSql)) {
                     $updateStmt->bind_param("s", $token);
                     if ($updateStmt->execute()) {
-                        echo "Your account has been activated successfully.";
+                        displayMessage("Your account has been activated successfully.");
                     } else {
-                        echo "Error: " . $updateStmt->error;
+                        displayMessage("Error: " . $updateStmt->error, false);
                     }
                     $updateStmt->close();
                 } else {
-                    echo "Error: " . $conn->error;
+                    displayMessage("Error: " . $conn->error, false);
                 }
             } else {
-                echo "Invalid or expired verification link.";
+                displayMessage("Invalid or expired verification link.", false);
             }
         } else {
-            echo "Error: " . $stmt->error;
+            displayMessage("Error: " . $stmt->error, false);
         }
 
         $stmt->close();
     } else {
-        echo "Error: " . $conn->error;
+        displayMessage("Error: " . $conn->error, false);
     }
 } else {
-    echo "No verification token provided.";
+    displayMessage("No verification token provided.", false);
 }
 ?>
